@@ -12,7 +12,7 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language></language>
-    <summary>Summary for "livestreamer"</summary>
-    <description>Description for "livestreamer"</description>
+    <summary>livestreamer wrapper</summary>
+    <description>Plays videos from sites that are supported by livestreamer</description>
   </extension>
 </addon>

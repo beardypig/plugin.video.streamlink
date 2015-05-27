@@ -1,0 +1,3 @@
+[submodule "resources/site-packages/livestreamer"]
+	path = resources/site-packages/livestreamer
+	url = https://github.com/chrippa/livestreamer

@@ -10,6 +10,10 @@ from livestreamer.stream import HTTPStream, RTMPStream
 
 plugin = Plugin()
 
+def first_or_none(x):
+    if x and len(x) > 0:
+        return x[0]
+
 def get_proxy_cache(cid=None, region='proxy-cache', ttl=5, **values):
     # cache the info for a short period of time
     # the cache will be refreshed by the proxy daemon to keep the base urls up-to-date.
@@ -25,15 +29,18 @@ def generate_proxy_url(cache_id):
 @plugin.route('/play')
 def play_stream():
 
-    url = plugin.request.args.get('url')
+    url = first_or_none(plugin.request.args.get('url'))
     if not url:
         plugin.notify("No URL to stream provided")
-        return
+        return []
+
+    plugin.log.info("Trying to find a stream to play on {0}".format(url))
     session = livestreamer.Livestreamer()
 
     streams = session.streams(url)
 
     qual = plugin.request.args.get('q', 'best')
+    label = plugin.request.args.get('label', 'stream')
     stream = streams.get(qual)
 
     if stream is None:
@@ -41,12 +48,18 @@ def play_stream():
         plugin.log.error("Failed to find stream with the requested quality "
                          "({0}) with URL: {1} "
                          "(qualities available: {2})".format(qual, url, qlist or "N/A"))
-        plugin.notify("No streams available for this URL")
+        plugin.notify("No streams available for this URL, Geo-Locked?")
     else:
         if isinstance(stream, (HTTPStream, )):
             plugin.set_resolved_url(stream.url)
         elif isinstance(stream, (RTMPStream,)):
-            plugin.play_video(stream.params)
+            rtmp = stream.params.pop('rtmp')
+            args = ["{0}={1}".format(k, v) for k, v in stream.params.items()]
+            item = {
+                'label': label,
+                'path': '{0} {1}'.format(rtmp, " ".join(args)),
+            }
+            plugin.play_video(item)
         else:
             cache_id, cache = get_proxy_cache(stream=stream)
 

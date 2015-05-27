@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 import SocketServer
 import re
+import shutil
 import threading
 
 import requests
@@ -24,6 +25,7 @@ class ProxyHandler(SimpleHTTPRequestHandler):
 
             _, stream_cache = get_proxy_cache(stream_cache_id)
             stream = stream_cache.get('stream')
+            stream_cache['stream'] = stream  # refresh cache
 
             if not stream:
                 self.send_error(404, "Stream not found")
@@ -40,6 +42,14 @@ class ProxyHandler(SimpleHTTPRequestHandler):
                         self.wfile.write(urljoin(stream.url, line) + '\n')
                     else:
                         self.wfile.write(line + '\n')
+            else:
+                fh = None
+                try:
+                    fh = stream.open()
+                    shutil.copyfileobj(fh, self.wfile)
+                finally:
+                    if fh:
+                        fh.close()
 
 
 if __name__ == "__main__":
