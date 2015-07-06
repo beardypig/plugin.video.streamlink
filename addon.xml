@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.livestreamer" name="livestreamer" version="0.1.0" provider-name="blxd">
+<addon id="plugin.video.livestreamer" name="livestreamer" version="1.12.2+blxd" provider-name="blxd">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmcswift2" version="2.4.0"/>
@@ -14,5 +14,9 @@
     <language></language>
     <summary>livestreamer wrapper</summary>
     <description>Plays videos from sites that are supported by livestreamer</description>
+    <platform>all</platform>
+    <license>Simplified BSD</license>
+    <source>https://github.com/chrippa/livestreamer.git</source>
+    <website>http://livestreamer.io</website>
   </extension>
 </addon>
