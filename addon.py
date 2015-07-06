@@ -10,6 +10,7 @@ from livestreamer.stream import HTTPStream, RTMPStream
 
 plugin = Plugin()
 
+
 def first_or_none(x):
     if x and len(x) > 0:
         return x[0]
@@ -57,7 +58,7 @@ def play_stream():
             args = ["{0}={1}".format(k, v) for k, v in stream.params.items()]
             item = {
                 'label': label,
-                'path': '{0} {1}'.format(rtmp, " ".join(args)),
+                'path': '{0} {1}'.format(rtmp, " ".join(args))
             }
             plugin.play_video(item)
         else:
