@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.livestreamer" name="livestreamer" version="1.12.2-blxd2" provider-name="blxd">
+<addon id="plugin.video.streamlink" name="streamlink" version="1.12.2-blxd2" provider-name="blxd">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmcswift2" version="2.4.0"/>
-    <import addon="script.module.requests" version="2.6.0"/>
+    <import addon="script.module.requests" version="2.9.1"/>
     <import addon="script.module.futures" version="2.2.0"/>
+    <import addon="script.module.singledispatch" version="3.4.0.3"/>
+    <import addon="script.module.backports.shutil_which" version="3.5.1"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py" />
   <extension point="xbmc.service" library="service.py" start="startup"/>
-  <extension point="xbmc.python.module" library="resources/site-packages/livestreamer/src/livestreamer" />
+  <extension point="xbmc.python.module" library="resources/site-packages/streamlink/src/streamlink" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language></language>
-    <summary>livestreamer wrapper</summary>
-    <description>Plays videos from sites that are supported by livestreamer</description>
+    <summary>streamlink wrapper</summary>
+    <description>Plays videos from sites that are supported by streamlink</description>
     <platform>all</platform>
     <license>Simplified BSD</license>
-    <source>https://github.com/chrippa/livestreamer.git</source>
-    <website>http://livestreamer.io</website>
+    <source>https://github.com/streamlink/streamlink.git</source>
+    <website>http://streamlink.github.io</website>
   </extension>
 </addon>

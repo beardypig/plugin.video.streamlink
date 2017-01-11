@@ -10,7 +10,7 @@ import xbmc
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from urlparse import urljoin
 from addon import get_proxy_cache, plugin
-from livestreamer.stream import HLSStream
+from streamlink.stream import HLSStream
 
 
 class ProxyHandler(SimpleHTTPRequestHandler):
