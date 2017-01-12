@@ -1,4 +1,0 @@
-[submodule "resources/site-packages/streamlink"]
-	path = resources/site-packages/streamlink
-	url = https://github.com/streamlink/streamlink/
-	branch = master
