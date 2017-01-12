@@ -2,8 +2,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'site-packages',
-                                'streamlink', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib', 'streamlink'))
 import streamlink
 import uuid
 from xbmcswift2 import Plugin

@@ -2,36 +2,30 @@ sudo: false
 language: python
 python:
 - '3.5'
-env:
-- VERSION=${TRAVIS_TAG:-SNAPSHOT}
+install:
+- pip install requests
 script:
+- wget "https://github.com/streamlink/streamlink/archive/master.zip"
+- unzip master.zip
 - ./waf configure clean build dist
-- pushd build
-- md5sum "plugin.video.streamlink-${VERSION}.zip" > "plugin.video.streamlink-${VERSION}.zip.md5"
-- popd
 before_deploy:
+- pushd build
+- export ZFILE=$(ls plugin.video.streamlink-*.zip)
+- md5sum "${ZFILE}" > "${ZFILE}.md5"
+- popd
 - mkdir -p dist/
-- cp build/*.zip build/*.zip.md5 build/addon.xml dist/
+- cp build/plugin.video.streamlink* build/icon.png build/addon.xml dist/
 deploy:
-  - provider: s3
-    access_key_id: AKIAJA536STKTMHCZFZQ
-    secret_access_key:
-      secure: iv5/yq/9k3x/oZAfE0ZiAUb8V8Plv4c86uKz1TcnI2UIdUT6rpw5nWz15qhOOZ+P1jg4jupN7JXZXoTh1GHDOe0uP4+5BIUcodp439HPc43bdfvlp6YJwqrQQw1hnW7uuTvoEqtGvm49HAyn+HGzvqb5hrSbo3NYji8JvhPDa3L5XjbURHphOvSiFTuf/oT419y/cLX0yQtESAJGJqgYf/2KQKTaA6k3av3QkZFdYWR5FRr54nLgrPqj042/5yEtbUCHV5+cXoNDmLQYKsdhV/Xb6dxWIEVp2gmIjvdjnZareE2jCFbYJdBvPf5kK6H0EB6c47U15O7FnoZ5wEd+0djXgAhozOTK7GzCVbw6gUQRtb5z9GxaFrTWrmCEoHUgdcxbq2xEV2RWzzLDTT7Pz5ZKRZ0uroiR5e9xaZa2WYxIITqf1JSD9zVNJmeGkXzC+CjaAUbdzuJBa94USWFRGian1p/5lnwBQIkXS/NL/XykdIjKZUZ9aF5BUp2EOfk3SNMq2SY9HGj4k21+YhWaf4et+YArfxldUGM8qjDcMC1FxignLW9eE8OuR8Xh0DPaGB0hGK5h2kEsDt4ven1YJJnFWrsAKuVI5WPnoovp0INkiA+5rKSj0kFggcOTnw2m6z/Gq+fVIIsxPji3UgoNo2I76VcqZEk2v/D4j/avPEE=
-    bucket: xbmc.beardypig.plugins
-    local-dir: dist
-    upload-dir: addons/plugin.video.streamlink
-    skip_cleanup: true
-    on:
-      repo: beardypig/plugin.video.streamlink
-      tags: true
-  - provider: releases
-    api_key:
-      secure: ONzbatJPoS5gbWDJyUq2mvBp5VyP75NoSYN8k2RmQKaXUcQxjod9Gmrr5AaOtWMQ2F/O/p6Jrs+7924DIlorGvjb5ZXKWAp7yxum1uYcYsyUweEgcZz/C1ANsxaucOfh1pRaHXOmOVFWACqqUVCa61yvHhxszBhl1kOlpJ2c4LrlhvQVpsYMecv76dbDwxX8dnJS54vsCkFKR93opNFjgV+eKt1UdxwpMWow0KNKmu1ZL1Em3+bKDMUuujcG2deUxH8PLviKOqS7LTT6yDVlbQXmBos3YlDnzQaoFdbw/+FocPOCT6TxImRy3Ie+HRIkJnDFP4UsJX7OqNWT5lM/fRzDIjDh5yztS7Iw5eGKG9ZgGMch++E6XVbtZelRvpbsWBWv+PDuURUZdISpKIJAWri+qDRpaZGSaANd8IlQ/XFAXa7BXP3UXWdAkyjm0eWHC2PAM1d+GfX9qbFzFrqX8fd9PdRhta77lYFIbWo/0iQ+b/hPHdW7MhtOmQ8/5EPH3Bsx5M0wDe395ewQfGgwzMbIanQ/8Vp3tA2O5g5clB0CqX+quC/BwmON3Ppm+fSjWFyfIjUtMGRL08DwcVHNV/Qfzd3Kv3b4M0m+TWxJtInmXNIL8Q9tKWRzgctRu/yIkiRTH1CAU5p+9D/INbinZjD52T5pNndxf/79dN6PbWw=
-    file: $TRAVIS_BUILD_DIR/build/plugin.video.streamlink-$VERSION.zip
-    on:
-      repo: beardypig/plugin.video.streamlink
-      tags: true
-# Update the addon index
+  provider: s3
+  access_key_id: AKIAJA536STKTMHCZFZQ
+  secret_access_key:
+    secure: qOh6IECi45oZkfm5Mh0IP0H8dW8irEuB2xaO0ygzs1bUe9tScjbeKhyY+r565Ucv5si1RiB+msMDURkqqkIvs2sLMtTMTvk6CqMTsH/ZbxKkYarhGMVDcDCvxET02OPI6Ne7VkXnO4Hlpg4nTc8khvqiktdlp5F6okZiqh0gtTrWdHKEmicvy5gmSofsoO03jpjORBGmN5YqqSs/i9aWPFrbkBzDnXNKQ/d9m3TwI1XK5qZ9zmw3Ge3Sbom31Y6dWfNFHMe/rZsg5Zgh/UbWaE1sLdgY4sevFIHufnoNuGIEZ2cQAt4HEr3TciuoDukvgR8RJ/vRp96Yh41rFG4G4Y6Kb1E4bI8YMmcqhaT8CQFP7Is4oGv0uXR/DFJ14zvSHvbAm1FbMfl2KXuk32Si7/hltjz1BHu3NwYyp0P8IbDvkwvPzEKexPaMoFG6vfpbJJCK030rU9rchpumrUpPZio3FZKUfN0lrrk+oBHc+hHzZEV4Q/FhrdPcDG6+rcJqG9+21KhaWo7rfa13U8x50DFPSB2zi+WMcQDxDz6tehlgQQnk7rosLCt+AvRgOZ0QlUAFDRo+UbCO6Ndx0S6KfWpkPZQ9N06UTxYPmxvbDNlj8BFpe4fmSFXfDO+kPJ2f5arWR3AOzTfu1pejyr0mCozi6z1+mF8QqFh/wfPeZu0=
+  bucket: xbmc.beardypig.plugins
+  local-dir: dist
+  upload-dir: addons/plugin.video.streamlink
+  skip_cleanup: true
+true:
+  repo: beardypig/plugin.video.streamlink
 after_deploy:
 - gem install travis
 - curl -LO curl -LO https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh

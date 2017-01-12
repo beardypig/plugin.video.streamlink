@@ -1,31 +1,35 @@
-import sys
 import os
+import re
 
 BUILD_NUMBER = os.environ.get("TRAVIS_BUILD_NUMBER", 0)
 APPNAME = "plugin.video.streamlink"
-STREAMLINK_ZIP = "https://github.com/streamlink/streamlink/archive/master.zip"
 out = "build"
 
 
-def get_version(bld):
-    streamlink_path = bld.path.make_node("lib/streamlink")
-    sys.path.insert(0, str(streamlink_path))
-    import streamlink
-    return "{0}.{1}".format(streamlink.__version__, BUILD_NUMBER)
+def get_version(bld, dir):
+    streamlink_path = dir.make_node("streamlink/__init__.py")
+    with open(str(streamlink_path)) as fd:
+        d = fd.read()
+        m = re.search('__version__ = "(\d+\.\d+\.\d+)"', d)
+        v = m and m.group(1) or "0.0.0"
+
+    return "{0}.{1}".format(v, BUILD_NUMBER)
 
 
 def configure(ctx):
     ctx.check_waf_version(mini='1.9.7')
+    if not os.path.exists("streamlink-master"):
+        ctx.fatal("streamlink-master directory must exist, download and unzip streamlink-master.zip")
 
 
 def build(bld):
-
-    bld(rule='wget {zip} -O ${{TGT}}'.format(zip=STREAMLINK_ZIP), target="streamlink.zip")
-    bld(rule='unzip -o ${SRC} ${TGT}/*', source='streamlink.zip', target=bld.path.get_bld().make_node('streamlink-master/src/streamlink'))
-    bld(rule='cp -r ${SRC} ${TGT}', source=bld.path.get_bld().make_node("streamlink-master/src/streamlink"), target=bld.path.get_bld().make_node("lib"))
+    streamlink_src = bld.path.make_node("streamlink-master/src")
+    bld(rule='cp -r ${SRC} ${TGT}',
+        source=streamlink_src.make_node("streamlink"),
+        target=bld.path.get_bld().make_node("lib/streamlink"))
 
     bld(features="subst", source="addon.xml.in", target="addon.xml",
-        APPNAME=APPNAME, VERSION=bld.env["VERSION"])
+        APPNAME=APPNAME, VERSION=get_version(bld, streamlink_src))
 
     for f in ['LICENSE', 'changelog.txt', 'README.md', 'icon.png', 'resources']:
         bld(rule='cp -r ${SRC} ${TGT}', source=bld.path.make_node(f), target=bld.path.get_bld().make_node(f))
@@ -35,6 +39,9 @@ def dist(ctx):
     ctx.algo = "zip"
     ctx.base_path = ctx.path.make_node(out)
     ctx.base_name = APPNAME  # set the base directory for the archive
-    ctx.arch_name = "{0}-{1}.{2}".format(APPNAME, get_version(ctx), ctx.ext_algo.get(ctx.algo, ctx.algo))
     ctx.files = ctx.path.ant_glob(
-        "build/**/*.xml build/*.md build/LICENSE build/**/*.xml build/lib/**")
+        "build/**/*.xml build/*.md build/icon.png build/LICENSE build/**/*.xml build/lib/**/*.py")
+    ctx.arch_name = "{0}-{1}.{2}".format(APPNAME,
+                                         get_version(ctx, ctx.path.make_node("build/lib")),
+                                         ctx.ext_algo.get(ctx.algo, ctx.algo))
+
