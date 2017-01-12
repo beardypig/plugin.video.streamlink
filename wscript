@@ -27,6 +27,9 @@ def build(bld):
     bld(rule='cp -r ${SRC} ${TGT}',
         source=streamlink_src.make_node("streamlink"),
         target=bld.path.get_bld().make_node("lib/streamlink"))
+    bld(rule='cp -r ${SRC} ${TGT}',
+        source=streamlink_src.make_node("streamlink_cli"),
+        target=bld.path.get_bld().make_node("lib/streamlink_cli"))
 
     bld(features="subst", source="addon.xml.in", target="addon.xml",
         APPNAME=APPNAME, VERSION=get_version(bld, streamlink_src))
