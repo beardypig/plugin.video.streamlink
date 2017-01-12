@@ -3,7 +3,7 @@
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmcswift2" version="2.4.0"/>
-    <import addon="script.module.requests" version="2.9.1"/>
+    <import addon="script.module.requests" version="2.12.4"/>
     <import addon="script.module.futures" version="2.2.0"/>
     <import addon="script.module.singledispatch" version="3.4.0.3"/>
     <import addon="script.module.backports.shutil_which" version="3.5.1"/>
