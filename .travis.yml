@@ -4,9 +4,10 @@ python:
 - '3.5'
 install:
 - pip install requests
-script:
+before_script:
 - wget "https://github.com/streamlink/streamlink/archive/master.zip"
 - unzip master.zip
+script:
 - ./waf configure clean build dist
 before_deploy:
 - pushd build
@@ -28,5 +29,5 @@ true:
   repo: beardypig/plugin.video.streamlink
 after_deploy:
 - gem install travis
-- curl -LO curl -LO https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
+- curl -LO https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
 - sh trigger-travis.sh beardypig xbmc.beardypig.plugins $TRAVIS_ACCESS_TOKEN
