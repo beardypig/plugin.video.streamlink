@@ -2,7 +2,7 @@
 A wrapper around the python library streamlink for playing videos supported by the streamlink module.
 
 - Author: blxd, beardypig, et al.
-- Version: 1.12.2-blxd3
+- Version: 0.3.1
 - Github: https://github.com/beardypig/plugin.video.streamlink, https://github.com/streamlink/streamlink
 
 ## Download and Installation
