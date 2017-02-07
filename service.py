@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 import SocketServer
 import re
 import shutil
@@ -9,7 +8,7 @@ import xbmc
 
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from urlparse import urljoin
-from addon import get_proxy_cache, plugin
+from addon import store_stream_item, plugin
 from streamlink.stream import HLSStream
 
 
@@ -23,9 +22,15 @@ class ProxyHandler(SimpleHTTPRequestHandler):
         else:
             stream_cache_id = match.group(1)
 
-            _, stream_cache = get_proxy_cache(stream_cache_id)
-            stream = stream_cache.get('stream')
-            stream_cache['stream'] = stream  # refresh cache
+            session = streamlink.Streamlink()
+            stream = None
+            stream_item = store_stream_item(stream_cache_id)
+            if stream_item:
+                url = stream_item.get('url')
+                quality = stream_item.get('quality')
+
+                streams = session.streams(url)
+                stream = streams.get(quality)
 
             if not stream:
                 self.send_error(404, "Stream not found")

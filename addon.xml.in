@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="@APPNAME@" name="streamlink" version="@VERSION@" provider-name="beardypig">
   <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.xbmcswift2" version="2.4.0"/>
+    <import addon="xbmc.python" version="2.19.0"/>
     <import addon="script.module.requests" version="2.9.1"/>
     <import addon="script.module.futures" version="2.2.0"/>
     <import addon="script.module.singledispatch" version="3.4.0.3"/>
@@ -12,7 +11,7 @@
     <import addon="script.module.streamlink.crypto" version="1.0.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py" />
-  <extension point="xbmc.service" library="service.py" start="startup"/>
+  <extension point="xbmc.service" library="service.py" start="startup" />
   <extension point="xbmc.python.module" library="lib/streamlink" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>

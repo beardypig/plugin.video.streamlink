@@ -31,7 +31,8 @@ def build(bld):
     bld(features="subst", source="addon.xml.in", target="addon.xml",
         APPNAME=APPNAME, VERSION=get_version(bld, streamlink_src))
 
-    for f in ['LICENSE', 'changelog.txt', 'README.md', 'icon.png', 'resources', 'addon.py']:
+    for f in ['LICENSE', 'changelog.txt', 'README.md', 'icon.png', 'resources',
+              'addon.py', 'service.py', 'simpleplugin.py']:
         bld(rule='cp -r ${SRC} ${TGT}', source=bld.path.make_node(f), target=bld.path.get_bld().make_node(f))
 
 
