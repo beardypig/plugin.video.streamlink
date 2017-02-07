@@ -25,11 +25,8 @@ def configure(ctx):
 def build(bld):
     streamlink_src = bld.path.make_node("streamlink-master/src")
     bld(rule='cp -r ${SRC} ${TGT}',
-        source=streamlink_src.make_node("streamlink"),
-        target=bld.path.get_bld().make_node("lib/streamlink"))
-    bld(rule='cp -r ${SRC} ${TGT}',
-        source=streamlink_src.make_node("streamlink_cli"),
-        target=bld.path.get_bld().make_node("lib/streamlink_cli"))
+        source=streamlink_src.make_node("streamlink/"),
+        target=bld.path.get_bld().make_node("lib/streamlink/"))
 
     bld(features="subst", source="addon.xml.in", target="addon.xml",
         APPNAME=APPNAME, VERSION=get_version(bld, streamlink_src))
@@ -43,7 +40,7 @@ def dist(ctx):
     ctx.base_path = ctx.path.make_node(out)
     ctx.base_name = APPNAME  # set the base directory for the archive
     ctx.files = ctx.path.ant_glob(
-        "build/**.xml build/**.md build/**.png build/LICENSE build/**.py build/lib/**/*.py "
+        "build/**.xml build/**.md build/**.png build/LICENSE build/**.py build/lib/*.py build/lib/**/*.py "
         "build/resources/*.py  build/**/*.xml")
     ctx.arch_name = "{0}-{1}.{2}".format(APPNAME,
                                          get_version(ctx, ctx.path.make_node("build/lib")),
