@@ -4,6 +4,7 @@ import re
 BUILD_NUMBER = os.environ.get("TRAVIS_BUILD_NUMBER", 0)
 APPNAME = "plugin.video.streamlink"
 out = "build"
+STREAMLINK_VERSION = "0.3.2"
 
 
 def get_version(bld, dir):
@@ -18,12 +19,12 @@ def get_version(bld, dir):
 
 def configure(ctx):
     ctx.check_waf_version(mini='1.9.7')
-    if not os.path.exists("streamlink-master"):
-        ctx.fatal("streamlink-master directory must exist, download and unzip streamlink-master.zip")
+    if not os.path.exists("streamlink-{0}".format(STREAMLINK_VERSION)):
+        ctx.fatal("streamlink-{0} directory must exist, download and unzip streamlink-{0}.zip".format(STREAMLINK_VERSION))
 
 
 def build(bld):
-    streamlink_src = bld.path.make_node("streamlink-master/src")
+    streamlink_src = bld.path.make_node("streamlink-{0}/src".format(STREAMLINK_VERSION))
     bld(rule='cp -r ${SRC} ${TGT}',
         source=streamlink_src.make_node("streamlink/"),
         target=bld.path.get_bld().make_node("lib/streamlink/"))
