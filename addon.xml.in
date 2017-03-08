@@ -12,7 +12,7 @@
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py" />
   <extension point="xbmc.service" library="service.py" start="startup" />
-  <extension point="xbmc.python.module" library="lib/streamlink" />
+  <extension point="xbmc.python.module" library="lib/" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language></language>
