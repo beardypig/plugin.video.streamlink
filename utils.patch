@@ -1,0 +1,28 @@
+From 2f2af07a3c7ad7fa55ddd6855fa77528effe2ffa Mon Sep 17 00:00:00 2001
+From: beardypig <beardypig@users.noreply.github.com>
+Date: Thu, 9 Mar 2017 15:15:15 +0000
+Subject: [PATCH] patch elementtree for kodi
+
+---
+ src/streamlink/utils/__init__.py | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/streamlink/utils/__init__.py b/src/streamlink/utils/__init__.py
+index 12d4195..74617a6 100644
+--- a/src/streamlink/utils/__init__.py
++++ b/src/streamlink/utils/__init__.py
+@@ -2,10 +2,7 @@ import json
+ import re
+ import zlib
+ 
+-try:
+-    import xml.etree.cElementTree as ET
+-except ImportError:  # pragma: no cover
+-    import xml.etree.ElementTree as ET
++import xml.etree.ElementTree as ET
+ 
+ from streamlink.compat import urljoin, urlparse, parse_qsl, is_py2
+ from streamlink.exceptions import PluginError
+-- 
+2.10.2
+

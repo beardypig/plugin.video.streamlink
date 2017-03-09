@@ -25,9 +25,13 @@ def configure(ctx):
 
 def build(bld):
     streamlink_src = bld.path.make_node("streamlink-{0}/src".format(STREAMLINK_VERSION))
+    bld(rule="patch -Nf ${SRC[0]} < ${SRC[1]} || true",
+        source=[streamlink_src.make_node("streamlink/utils/__init__.py"), "utils.patch"],
+        always=True)
+
     bld(rule='cp -r ${SRC} ${TGT}',
-        source=streamlink_src.make_node("streamlink/"),
-        target=bld.path.get_bld().make_node("lib/streamlink/"))
+        source=streamlink_src.make_node("streamlink"),
+        target=bld.path.get_bld().make_node("lib/streamlink"))
 
     bld(features="subst", source="addon.xml.in", target="addon.xml",
         APPNAME=APPNAME, VERSION=get_version(bld, streamlink_src))
