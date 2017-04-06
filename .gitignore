@@ -92,5 +92,7 @@ ENV/
 # waf
 .lock-waf*
 .waf-*/
-streamlink-master
-streamlink-master/
+.waf3-*/
+streamlink-*/
+streamlink-*
+*.zip
