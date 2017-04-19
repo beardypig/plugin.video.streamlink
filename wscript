@@ -4,7 +4,7 @@ import re
 BUILD_NUMBER = os.environ.get("TRAVIS_BUILD_NUMBER", 0)
 APPNAME = "plugin.video.streamlink"
 out = "build"
-STREAMLINK_VERSION = "9844f5612881753b32cbeb3c440187d61989e59e"
+STREAMLINK_VERSION = "3cd7e41827988d157d16803bb70b10a157ba2333"
 
 
 def get_version(bld, dir):
