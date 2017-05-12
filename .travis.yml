@@ -5,8 +5,8 @@ python:
 install:
 - pip install requests
 before_script:
-- wget "https://github.com/streamlink/streamlink/archive/5ba423c17ff50a35473cd2805decca8dc081c1d1.zip"
-- unzip 5ba423c17ff50a35473cd2805decca8dc081c1d1.zip
+- wget "https://github.com/streamlink/streamlink/archive/0.6.0.zip"
+- unzip 0.6.0.zip
 script:
 - ./waf configure clean build dist
 before_deploy:
