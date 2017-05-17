@@ -8,6 +8,7 @@ before_script:
 - wget "https://github.com/streamlink/streamlink/archive/0.6.0.zip"
 - unzip 0.6.0.zip
 script:
+- patch -Nf streamlink-0.6.0/src/streamlink/utils/__init__.py < utils.patch
 - ./waf configure clean build dist
 before_deploy:
 - pushd build
