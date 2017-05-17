@@ -17,24 +17,24 @@ def first_or_none(x):
 
 
 def store_stream_item(cid=None, **values):
-    cache = plugin.get_storage()
-    cid = cid or uuid.uuid4().hex
-    try:
-        data = cache[cid]
-    except KeyError:
-        data = {}
-    data.update(values)
-    cache[cid] = data
+    with plugin.get_storage() as cache:
+        cid = cid or uuid.uuid4().hex
+        try:
+            data = cache[cid]
+        except KeyError:
+            data = {}
+        data.update(values)
+        cache[cid] = data
 
     return cid
 
 
 def get_stream_item(cid):
-    cache = plugin.get_storage()
-    try:
-        return cache[cid]
-    except KeyError:
-        return None
+    with plugin.get_storage() as cache:
+        try:
+            return cache[cid]
+        except KeyError:
+            return None
 
 
 
